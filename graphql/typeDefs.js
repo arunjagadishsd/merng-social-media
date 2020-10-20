@@ -10,14 +10,15 @@ const typeDefs = gql`
     id: ID!
     email: String!
     token: String!
-    userName: String!
-    createdAt: String!
+    username: String!
+    # createdAt: String
   }
   input RegisterInput {
     username: String!
     password: String!
     confirmPassword: String!
     email: String!
+    # createdAt: String
   }
   type Query {
     getPosts: [Post]

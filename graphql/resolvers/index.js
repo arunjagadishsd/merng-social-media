@@ -1,5 +1,6 @@
 import postResolver from './postResolver.js';
-// import userResolver from './userResolver';
+import userResolver from './userResolver.js';
 
 const Query = { ...postResolver.Query };
-export default { Query };
+const Mutation = { ...userResolver.Mutation };
+export default { Query, Mutation };
