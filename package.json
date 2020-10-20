@@ -3,9 +3,19 @@
   "version": "1.0.0",
   "description": "A social media app with Mongo, Express, React, Node and GraphQL",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "AJSD",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.18.2",
+    "graphql": "^15.3.0",
+    "mongoose": "^5.10.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
 }
