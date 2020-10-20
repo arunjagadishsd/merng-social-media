@@ -2,18 +2,29 @@ import { ApolloServer } from 'apollo-server';
 import gql from 'graphql-tag';
 import mongoose from 'mongoose';
 
+import Post from './models/postModel.js';
 import { MONGODB_URI } from './config.js';
 
-console.log('MONGODB_URI', MONGODB_URI);
-
 const typeDefs = gql`
+  type Post {
+    id: ID!
+    body: String!
+    username: String!
+  }
   type Query {
-    sayHi: String!
+    getPosts: [Post]
   }
 `;
 const resolvers = {
   Query: {
-    sayHi: () => 'Hello World!!!',
+    async getPosts() {
+      try {
+        const posts = await Post.find({});
+        return posts;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
   },
 };
 
