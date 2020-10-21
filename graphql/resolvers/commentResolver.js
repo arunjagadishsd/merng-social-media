@@ -1,12 +1,11 @@
 import Post from '../../models/postModel.js';
-import { UserInputError } from 'apollo-server';
+import { AuthenticationError, UserInputError } from 'apollo-server';
 import checkAuth from '../../utils/checkAuth.js';
 
 const commentResolver = {
   Mutation: {
     createComment: async (_, { postId, body }, context) => {
       const { username } = checkAuth(context);
-      console.log('username', username);
       if (body.trim() === '') {
         throw new UserInputError('Empty Comment', {
           errors: {
@@ -25,6 +24,24 @@ const commentResolver = {
       } else {
         throw new UserInputError('Post not found');
       }
+    },
+    // Delete Comment
+    deleteComment: async (_, { postId, commentId }, context) => {
+      console.log('commentId', commentId);
+      const { username } = checkAuth(context);
+      const post = await Post.findById(postId);
+      if (post) {
+        const commentIndex = post.comments.findIndex((c) => c.id === commentId);
+        if (post.comments[commentIndex].username === username) {
+          post.comments.splice(commentIndex, 1);
+          await post.save();
+          return post;
+        } else {
+          throw new AuthenticationError('Action not allowed');
+        }
+      }
+      console.log(post);
+      return post;
     },
   },
 };
