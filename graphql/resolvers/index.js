@@ -8,4 +8,5 @@ const Mutation = {
   ...postResolver.Mutation,
   ...commentResolver.Mutation,
 };
-export default { Query, Mutation };
+const Subscription = { ...postResolver.Subscription };
+export default { Query, Mutation, Subscription };

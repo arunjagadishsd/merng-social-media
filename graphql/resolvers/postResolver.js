@@ -33,6 +33,8 @@ const postResolver = {
         username: user.username,
       });
       const post = await newPost.save();
+
+      context.pubsub.publish('NEW_POST', { newPost: post });
       return post;
     },
     // To delete a post
@@ -75,6 +77,11 @@ const postResolver = {
       } else {
         throw new UserInputError('Post Not Found');
       }
+    },
+  },
+  Subscription: {
+    newPost: {
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator('NEW_POST'),
     },
   },
 };
