@@ -40,7 +40,6 @@ const commentResolver = {
           throw new AuthenticationError('Action not allowed');
         }
       }
-      console.log(post);
       return post;
     },
   },

@@ -1,4 +1,4 @@
-import { AuthenticationError } from 'apollo-server';
+import { AuthenticationError, UserInputError } from 'apollo-server';
 
 import Post from '../../models/postModel.js';
 import checkAuth from '../../utils/checkAuth.js';
@@ -24,6 +24,7 @@ const postResolver = {
     },
   },
   Mutation: {
+    // To create new post
     async createPost(_, { body }, context) {
       const user = checkAuth(context);
       const newPost = new Post({
@@ -34,6 +35,7 @@ const postResolver = {
       const post = await newPost.save();
       return post;
     },
+    // To delete a post
     async deletePost(_, { postId }, context) {
       const user = checkAuth(context);
       try {
@@ -51,6 +53,27 @@ const postResolver = {
         }
       } catch (err) {
         throw new Error(err);
+      }
+    },
+    // To like or unlike a post
+    async likePost(_, { postId }, context) {
+      const { username } = checkAuth(context);
+      console.log('username', username);
+      const post = await Post.findById(postId);
+      console.log('post', post);
+      if (post) {
+        if (post.likes.find((like) => like.username === username)) {
+          // post already liked, unlike it
+          post.likes = post.likes.filter((like) => like.username !== username);
+        } else {
+          post.likes.push({
+            username,
+          });
+        }
+        await post.save();
+        return post;
+      } else {
+        throw new UserInputError('Post Not Found');
       }
     },
   },
