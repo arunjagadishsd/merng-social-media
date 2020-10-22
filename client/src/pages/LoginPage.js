@@ -1,16 +1,17 @@
 import { gql, useMutation } from '@apollo/client';
 import React, { useState } from 'react';
 import { Button, Form } from 'semantic-ui-react';
+import { useForm } from '../utils/hooks';
 
-const RegisterPage = ({ history }) => {
+const LoginPage = ({ history }) => {
   const [errors, setErrors] = useState({});
-  const [values, setValues] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [addUser, { loading }] = useMutation(REGISTER_USER, {
+
+  const { onChangeHandler, onSubmitHandler, values } = useForm(
+    loginUserHandler,
+    { username: '', password: '' }
+  );
+
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, result) {
       history.push('/');
     },
@@ -20,12 +21,9 @@ const RegisterPage = ({ history }) => {
     },
     variables: values,
   });
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    addUser();
-  };
-  const onChangeHandler = (e) =>
-    setValues({ ...values, [e.target.name]: e.target.value });
+  function loginUserHandler() {
+    loginUser();
+  }
   return (
     <div>
       <Form
@@ -33,7 +31,7 @@ const RegisterPage = ({ history }) => {
         noValidate
         className={loading ? 'loading' : ''}
       >
-        <h1>Register</h1>
+        <h1> Login </h1>
         <Form.Input
           label="Username"
           placeholder="Username.."
@@ -42,16 +40,7 @@ const RegisterPage = ({ history }) => {
           type="text"
           error={errors.username ? true : false}
           onChange={onChangeHandler}
-        ></Form.Input>
-        <Form.Input
-          label="Email"
-          placeholder="Email.."
-          name="email"
-          type="email"
-          error={errors.email ? true : false}
-          value={values.email}
-          onChange={onChangeHandler}
-        ></Form.Input>
+        />
         <Form.Input
           label="Password"
           placeholder="Password.."
@@ -60,18 +49,9 @@ const RegisterPage = ({ history }) => {
           error={errors.password ? true : false}
           value={values.password}
           onChange={onChangeHandler}
-        ></Form.Input>
-        <Form.Input
-          label="Confirm Password"
-          placeholder="Confirm Password.."
-          name="confirmPassword"
-          type="password"
-          error={errors.confirmPassword ? true : false}
-          value={values.confirmPassword}
-          onChange={onChangeHandler}
-        ></Form.Input>
+        />
         <Button type="submit" primary>
-          Register
+          Login
         </Button>
       </Form>
       {Object.keys(errors).length > 0 && (
@@ -87,21 +67,9 @@ const RegisterPage = ({ history }) => {
   );
 };
 
-const REGISTER_USER = gql`
-  mutation register(
-    $username: String!
-    $email: String!
-    $password: String!
-    $confirmPassword: String!
-  ) {
-    register(
-      registerInput: {
-        username: $username
-        email: $email
-        password: $password
-        confirmPassword: $confirmPassword
-      }
-    ) {
+const LOGIN_USER = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
       id
       email
       username
@@ -111,4 +79,4 @@ const REGISTER_USER = gql`
   }
 `;
 
-export default RegisterPage;
+export default LoginPage;

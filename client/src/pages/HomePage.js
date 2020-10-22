@@ -5,7 +5,7 @@ import { Grid } from 'semantic-ui-react';
 import PostCard from '../components/PostCard.js';
 
 const HomePage = () => {
-  const { loading, error, data } = useQuery(FETCH_POST_QUERY);
+  const { loading, data } = useQuery(FETCH_POST_QUERY);
   return (
     <>
       <div className="ui segment center aligned header">
