@@ -8,17 +8,20 @@ import MenuBar from './components/MenuBar';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import { AuthProvider } from './context/authContext';
 
 function App() {
   return (
-    <Router>
-      <Container>
-        <MenuBar />
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/register" component={RegisterPage} />
-      </Container>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Container>
+          <MenuBar />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
+        </Container>
+      </Router>
+    </AuthProvider>
   );
 }
 
