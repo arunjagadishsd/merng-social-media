@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import { AuthProvider } from './context/authContext';
+import AuthRoute from './utils/AuthRoute';
 
 function App() {
   return (
@@ -17,8 +18,8 @@ function App() {
         <Container>
           <MenuBar />
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/register" component={RegisterPage} />
+          <AuthRoute exact path="/login" component={LoginPage} />
+          <AuthRoute exact path="/register" component={RegisterPage} />
         </Container>
       </Router>
     </AuthProvider>
