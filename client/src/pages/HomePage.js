@@ -5,27 +5,6 @@ import { Grid } from 'semantic-ui-react';
 import PostCard from '../components/PostCard.js';
 
 const HomePage = () => {
-  const FETCH_POST_QUERY = gql`
-    {
-      getPosts {
-        id
-        body
-        createdAt
-        username
-        likeCount
-        likes {
-          username
-        }
-        commentCount
-        comments {
-          id
-          username
-          createdAt
-          body
-        }
-      }
-    }
-  `;
   const { loading, error, data } = useQuery(FETCH_POST_QUERY);
   return (
     <>
@@ -49,5 +28,27 @@ const HomePage = () => {
     </>
   );
 };
+
+const FETCH_POST_QUERY = gql`
+  {
+    getPosts {
+      id
+      body
+      createdAt
+      username
+      likeCount
+      likes {
+        username
+      }
+      commentCount
+      comments {
+        id
+        username
+        createdAt
+        body
+      }
+    }
+  }
+`;
 
 export default HomePage;
